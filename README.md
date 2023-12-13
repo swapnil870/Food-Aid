@@ -1,4 +1,4 @@
-# Food Donation Management System
+# Food Donation System
 
 Welcome to the Food Donation Management System, a web application designed to streamline the process of food donation and collection activities.
 
