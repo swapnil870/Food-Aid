@@ -1,6 +1,6 @@
 # Food Donation System
 
-Welcome to the Food Donation Management System, a web application designed to streamline the process of food donation and collection activities.
+Welcome to the Food Donation System, a web application designed to streamline the process of food donation and collection activities.
 
 ## Table of Contents
 * [Features](#features)
