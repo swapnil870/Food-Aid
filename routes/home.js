@@ -6,15 +6,15 @@ router.get("/", (req,res) => {
 });
 
 router.get("/home/about-us", (req,res) => {
-	res.render("home/aboutUs", { title: "About Us | Food Aid" });
+	res.render("home/aboutUs", { title: "About Us | Nourish " });
 });
 
 router.get("/home/mission", (req,res) => {
-	res.render("home/mission", { title: "Our mission | Food Aid" });
+	res.render("home/mission", { title: "Our mission | Nourish" });
 });
 
 router.get("/home/contact-us", (req,res) => {
-	res.render("home/contactUs", { title: "Contact us | Food Aid" });
+	res.render("home/contactUs", { title: "Contact us | Nourish" });
 });
 
 
