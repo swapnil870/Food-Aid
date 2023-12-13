@@ -1,7 +1,7 @@
 {
   "name": "food-donation-management-system",
   "version": "1.0.0",
-  "description": "A Food donation management system in which donors can donate the food and this food can be fed to the poor people",
+  "description": "A food donation system is a coordinated effort to collect surplus or unsold food from various donors, such as individuals, restaurants, and grocery stores. The donated food is then sorted, inspected, and distributed through a network of organizations, including charities and community centers, to individuals or families in need. The system relies on volunteers, compliance with health regulations, and continuous improvement to minimize food waste and address hunger in the community.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -12,7 +12,7 @@
     "Donation",
     "management"
   ],
-  "author": "aayush",
+  "author": "Swapnil",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
