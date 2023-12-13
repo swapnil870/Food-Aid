@@ -1,7 +1,7 @@
 {
-  "name": "Food-donation-system",
+  "name": "food-donation-system",
   "version": "1.0.0",
-  "description": "A web application which is useful for management of food donation and collection activities.   [View Demo](https://food-aid-aayush.herokuapp.com/)",
+  "description": "A web application which is useful for management of food donation and collection activities.",
   "main": "app.js",
   "dependencies": {
     "abbrev": "^1.1.1",
@@ -198,9 +198,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Swapnil",
   "license": "ISC"
 }
