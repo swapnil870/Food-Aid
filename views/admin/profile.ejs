@@ -47,7 +47,7 @@
 			
 			<div class="mb-4">
 				<label for="phone" class="form-label">Phone</label>
-				<input type="number" name="admin[phone]" class="form-control" id="phone" placeholder="Enter phone.." value="<%= currentUser.phone %>">
+				<input type="tel" name="agent[phone]" class="form-control" id="phone" placeholder="Enter phone.." pattern="\d{10}" title="Please enter 10 digits" value="<%= currentUser.phone %>">
 			</div>
 			
 			<button type="submit" class="btn w-75 d-block m-auto mt-4">Update</button>

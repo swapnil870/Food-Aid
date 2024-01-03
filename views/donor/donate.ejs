@@ -23,6 +23,9 @@
 					<label for="time" class="form-label">Time of cooking</label>
 					<input type="datetime-local" name="donation[cookingTime]" class="form-date-input" id="time" required>
 				</div>
+				
+				
+				
 			</div>
 			
 			<div class="row">
@@ -31,10 +34,11 @@
 					<input type="text" name="donation[address]" class="form-control" id="address" placeholder="Enter address.." value="<%= currentUser.address %>" required>
 				</div>
 				
-				<div class="mb-4 col-sm-4">
+				<div class="mb-4">
 					<label for="phone" class="form-label">Phone</label>
-					<input type="number" name="donation[phone]" class="form-control" id="phone" placeholder="Enter phone.." value="<%= currentUser.phone %>" required>
+					<input type="tel" name="agent[phone]" class="form-control" id="phone" placeholder="Enter phone.." pattern="\d{10}" title="Please enter 10 digits" value="<%= currentUser.phone %>">
 				</div>
+				
 			</div>
 			
 			<div class="mb-4">
@@ -48,8 +52,15 @@
 	</div>
 </main>
 
-<script>
+<!-- <script>
 	const d = new Date();
 	const dateString = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + "T" + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
 	document.getElementById("time").value = dateString;
+</script> -->
+<script>
+	// Get the current date and time in the format required by datetime-local input
+	var currentDate = new Date().toISOString().slice(0, 16);
+
+	// Set the min attribute to the current date and time
+	document.getElementById("time").min = currentDate;
 </script>
