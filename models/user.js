@@ -31,8 +31,14 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		enum: ["admin", "donor", "agent"],
 		required: true
+	},
+	securityKey: {
+		type: String,
+		required: function() { return this.role === 'admin'; } // only required for admin role
 	}
 });
 
 const User = mongoose.model("users", userSchema);
 module.exports = User;
+
+
