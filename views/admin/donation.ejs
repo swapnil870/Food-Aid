@@ -39,7 +39,7 @@
 				<span><%= donation.phone %></span>
 			</div>
 			
-			<% if(donation.donorToAdminMsg != "") { %>
+			<% if(donation.donorToAdminMsg) { %>
 				<div class="mb-2">
 					<span>Message from Donor:</span>
 					<div class="ms-3"><%= donation.donorToAdminMsg %></div>
@@ -51,27 +51,26 @@
 				<span class="fw-bold text-<%= donation.status %>"><%= donation.status %></span>
 			</div>
 			
-			<% if(donation.status == "assigned") { %>
+			<% if(donation.status == "assigned" && donation.agent) { %>
 				<div class="mb-2">
 					<span>Agent assigned:</span>
-					<span><%= donation.agent.firstName + " "  + donation.agent.lastName %></span>
+					<span><%= donation.agent.firstName + " " + donation.agent.lastName %></span>
 				</div>
 			<% } %>
 			
-			<% if(donation.status == "assigned" && donation.adminToAgentMsg != "") { %>
+			<% if(donation.status == "assigned" && donation.adminToAgentMsg) { %>
 				<div class="mb-2">
 					<span>Your message to Agent:</span>
 					<div class="ms-3"><%= donation.adminToAgentMsg %></div>
 				</div>
 			<% } %>
 			
-			<% if(donation.status == "collected") { %>
+			<% if(donation.status == "collected" && donation.collectionTime) { %>
 				<div class="mb-2">
 					<span>Collection time:</span>
 					<span><%= donation.collectionTime.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short"}) %></span>
 				</div>
 			<% } %>
-			
 			
 			<div class="mt-4">
 				<% if(donation.status == "pending") { %>
