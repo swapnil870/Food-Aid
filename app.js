@@ -3,6 +3,7 @@ const app = express();
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
+const bodyParser = require("body-parser");
 const expressLayouts = require("express-ejs-layouts");
 const methodOverride = require("method-override");
 const homeRoutes = require("./routes/home.js");
@@ -37,6 +38,8 @@ app.use((req, res, next) => {
 	res.locals.warning = req.flash("warning");
 	next();
 });
+
+
 
 
 

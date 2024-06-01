@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config();
 
 const express = require("express");
 const router = express.Router();
@@ -6,8 +6,19 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user.js");
 const passport = require("passport");
 const middleware = require("../middleware/index.js");
+const nodemailer = require('nodemailer');
+const speakeasy = require('speakeasy');
 
 const ADMIN_SECURITY_KEY = process.env.ADMIN_SECURITY_KEY;
+
+// Nodemailer setup
+const transporter = nodemailer.createTransport({
+	service: 'Gmail',
+	auth: {
+		user: process.env.EMAIL,
+		pass: process.env.EMAIL_PASSWORD,
+	},
+});
 
 router.get("/auth/signup", middleware.ensureNotLoggedIn, (req, res) => {
 	res.render("auth/signup", { title: "User Signup" });
@@ -46,6 +57,44 @@ router.post("/auth/signup", middleware.ensureNotLoggedIn, async (req, res) => {
 			});
 		}
 
+		const otp = speakeasy.totp({
+			secret: process.env.OTP_SECRET,
+			encoding: 'base32',
+		});
+
+		const mailOptions = {
+			to: email,
+			from: process.env.EMAIL,
+			subject: 'Verify your email',
+			text: `Your OTP code is ${otp}`,
+		};
+
+		await transporter.sendMail(mailOptions);
+
+		req.session.tempUser = { firstName, lastName, email, password1, role, securityKey, otp };
+		res.redirect('/auth/verify-otp');
+	} catch (err) {
+		console.log(err);
+		req.flash("error", "Some error occurred on the server.");
+		res.redirect("back");
+	}
+});
+
+router.get('/auth/verify-otp', middleware.ensureNotLoggedIn, (req, res) => {
+	res.render('auth/verify-otp', { title: 'Verify OTP' });
+});
+
+router.post('/auth/verify-otp', middleware.ensureNotLoggedIn, async (req, res) => {
+	const { otp } = req.body;
+	const { tempUser } = req.session;
+	const { firstName, lastName, email, password1, role, securityKey, otp: sentOtp } = tempUser;
+
+	if (otp !== sentOtp) {
+		req.flash('error', 'Invalid OTP');
+		return res.redirect('/auth/verify-otp');
+	}
+
+	try {
 		const newUser = new User({ firstName, lastName, email, password: password1, role });
 		if (role === 'admin') {
 			newUser.securityKey = securityKey;
@@ -55,6 +104,7 @@ router.post("/auth/signup", middleware.ensureNotLoggedIn, async (req, res) => {
 		newUser.password = hash;
 		await newUser.save();
 		req.flash("success", "You are successfully registered and can log in.");
+		delete req.session.tempUser;
 		res.redirect("/auth/login");
 	} catch (err) {
 		console.log(err);
