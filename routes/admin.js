@@ -4,6 +4,9 @@ const middleware = require("../middleware/index.js");
 const User = require("../models/user.js");
 const Donation = require("../models/donation.js");
 
+// Ensure you have the firebase admin initialized
+const { admin } = require('../firebase.js'); 
+
 // Dashboard route
 router.get("/admin/dashboard", middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
@@ -35,7 +38,7 @@ router.get("/admin/dashboard", middleware.ensureAdminLoggedIn, async (req, res) 
 // Pending donations route
 router.get("/admin/donations/pending", middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
-        const pendingDonations = await Donation.find({ status: ["pending", "accepted", "assigned"] }).populate("donor");
+        const pendingDonations = await Donation.find({ status: { $in: ["pending", "accepted", "assigned"] } }).populate("donor");
         res.render("admin/pendingDonations", { title: "Pending Donations", pendingDonations });
     } catch (err) {
         console.log(err);
@@ -147,23 +150,35 @@ router.get("/admin/profile", middleware.ensureAdminLoggedIn, (req, res) => {
 router.put("/admin/profile", middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
         const id = req.user._id;
-        const updateObj = req.body.admin; // updateObj: {firstName, lastName, gender, address, phone}
-        await User.findByIdAndUpdate(id, updateObj);
+        const { firstName, lastName, gender, address, phone } = req.body.admin;
 
-        req.flash("success", "Profile updated successfully");
-        res.redirect("/admin/profile");
+        // Ensure phone is defined and correctly formatted
+        if (phone) {
+            await User.findByIdAndUpdate(id, {
+                firstName,
+                lastName,
+                gender,
+                address,
+                phone
+            });
+
+            req.flash("success", "Profile updated successfully");
+            return res.redirect("/admin/profile");
+        } else {
+            throw new Error("Country code or phone number is missing.");
+        }
     } catch (err) {
         console.log(err);
         req.flash("error", "Some error occurred on the server.");
-        res.redirect("back");
+        return res.redirect("back");
     }
 });
 
 // Combined donations route
 router.get('/admin/donations', middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
-        const previousDonations = await Donation.find().populate("donor"); // Fetch previous donations from your database
-        const donation = await Donation.findOne().populate("donor"); // Fetch the current donation being viewed, if applicable
+        const previousDonations = await Donation.find().populate("donor");
+        const donation = await Donation.findOne().populate("donor");
         res.render('admin/previousDonations', { previousDonations, donation });
     } catch (err) {
         console.log(err);

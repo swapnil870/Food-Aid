@@ -1,11 +1,46 @@
-<div id="sidebar">
-	<ul id="sidebar-nav">
-		<li>Welcome <%= currentUser.firstName %></li>
-		<li><a href="/admin/dashboard">Dashboard</a></li>
-		<li><a href="/admin/donations/pending">Pending Donations</a></li>
-		<li><a href="/admin/donations/previous">Previous Donations</a></li>
-		<li><a href="/admin/agents">Agents</a></li>
-		<li><a href="/admin/profile">My Profile</a></li>
-		<li><a href="/auth/logout" class="btn">Logout</a></li>
-	</ul>
-</div>
+<div id="sidebar" class="d-flex flex-column flex-shrink-0 py-3 text-bg-dark" style=" background-color: rgba(0, 0, 0, 0.767);">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <span class="fs-4">Welcome <%= currentUser.firstName %> <%= currentUser.lastName %></span>
+    </a>
+    <hr>
+    <ul id="sidebar-nav" class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/admin/dashboard" class="nav-link text-white" aria-current="page">
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clipboard-data-fill mb-1" viewBox="0 0 16 16">
+				<path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/>
+				<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5zM10 8a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1"/>
+			  </svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/admin/agents" class="nav-link text-white">
+			<img src="/assets/images/Daco_5058091.png" height="20px" width="20px" class="img-small mb-1">
+          Agents
+        </a>
+      </li>
+      <li>
+        <a href="/admin/donations/pending" class="nav-link text-white">
+			<img src="https://uxwing.com/wp-content/themes/uxwing/download/time-and-date/pending-icon.png" width="20" height="20" alt="Pending icon" title="Pending icon" class="img-small mb-1">
+			My Pending Donations
+        </a>
+      </li>
+      <li>
+        <a href="/admin/donations/previous" class="nav-link text-white">
+			<img src="https://cdn-icons-png.flaticon.com/512/3208/3208254.png" width="20" height="20" alt="" title="" class="img-small2 mb-1">
+			My Previous Donations
+        </a>
+      </li>
+    </ul>
+    <hr>
+    <div class="dropdown mx-3">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <p class="user-icon text-decoration-none"><%= currentUser.firstName[0] %></p>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+        <li><a class="dropdown-item" href="/admin/profile">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="/auth/logout">Log out</a></li>
+      </ul>
+    </div>
+  </div>

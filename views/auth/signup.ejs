@@ -1,5 +1,5 @@
 <div class="m-0 pt-5 w-100 bg-img-1">
-	<form action="/auth/signup" method="POST" class="w-50 bg-white p-5 m-auto" style="min-width: 320px;">
+	<form action="/auth/signup" method="POST" class="form w-50 bg-white p-5 m-auto" style="min-width: 450px;">
 		<h3 class="text-center mb-3">User Signup</h3>
 
 		<% if (typeof errors != 'undefined') { %>
@@ -12,34 +12,30 @@
 		<% } %>
 
 		<div class="mb-3">
-			<label for="first-name" class="form-label">First name</label>
-			<input type="text" name="firstName" class="form-control" id="first-name" placeholder="Enter first name.." value="<%= typeof firstName != 'undefined' ? firstName : '' %>" required autofocus>
+			<input type="text" name="firstName" class="form-control" id="first-name" placeholder="First name" value="<%= typeof firstName != 'undefined' ? firstName : '' %>" required autofocus>
 		</div>
 
 		<div class="mb-3">
-			<label for="last-name" class="form-label">Last name</label>
-			<input type="text" name="lastName" class="form-control" id="last-name" placeholder="Enter last name.." value="<%= typeof lastName != 'undefined' ? lastName : '' %>" required>
+			<input type="text" name="lastName" class="form-control" id="last-name" placeholder="Last name" value="<%= typeof lastName != 'undefined' ? lastName : '' %>" required>
 		</div>
 
 		<div class="mb-3">
-			<label for="email" class="form-label">Email address</label>
-			<input type="email" name="email" class="form-control" id="email" placeholder="Enter email.." value="<%= typeof email != 'undefined' ? email : '' %>" required>
-			<div class="form-text">We'll never share your email with anyone else.</div>
+			<input type="email" name="email" class="form-control" id="email" placeholder="Email address" value="<%= typeof email != 'undefined' ? email : '' %>" required>
+			<div class="text-dark form-text">We'll never share your email with anyone else.</div>
 		</div>
 
 		<div class="mb-3">
-			<label for="password1" class="form-label">Password</label>
-			<input type="password" name="password1" class="form-control" id="password1" placeholder="Enter password.." value="<%= typeof password1 != 'undefined' ? password1 : '' %>" required>
+			<input type="password" name="password1" class="form-control" id="password1" placeholder="Password" value="<%= typeof password1 != 'undefined' ? password1 : '' %>" required>
 		</div>
 
 		<div class="mb-3">
-			<label for="password2" class="form-label">Confirm Password</label>
-			<input type="password" name="password2" class="form-control" id="password2" placeholder="Re-enter password.." value="<%= typeof password2 != 'undefined' ? password2 : '' %>" required>
+			
+			<input type="password" name="password2" class="form-control" id="password2" placeholder="Confirm Password" value="<%= typeof password2 != 'undefined' ? password2 : '' %>" required>
 		</div>
 
 		<div class="mb-3">
 			<label for="role" class="form-label">Signup as</label>
-			<select class="form-select" name="role" id="role" onchange="toggleSecurityKeyField()" required>
+			<select class="form-select form-control" name="role" id="role" onchange="toggleSecurityKeyField()" required>
 				<option value="donor" <%= typeof role != 'undefined' && role === 'donor' ? 'selected' : '' %>>Donor</option>
 				<option value="agent" <%= typeof role != 'undefined' && role === 'agent' ? 'selected' : '' %>>Agent</option>
 				<option value="admin" <%= typeof role != 'undefined' && role === 'admin' ? 'selected' : '' %>>Admin</option>
@@ -51,7 +47,7 @@
 			<input type="password" name="securityKey" class="form-control" id="securityKey" placeholder="Enter security key">
 		</div>
 
-		<button type="submit" class="btn d-block m-auto mt-4">Submit</button>
+		<button type="submit" class="btn btn-primary d-block m-auto mt-4">Signup</button>
 
 		<div class="mt-3">
 			<span>Already have an account?</span>
