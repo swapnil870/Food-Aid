@@ -27,7 +27,7 @@ const donationSchema = new mongoose.Schema({
         required: true
     },
     phone: {
-        type: Number,
+        type: String, // Changed from Number to String
         required: true
     },
     donorToAdminMsg: String,

@@ -4,6 +4,10 @@ const middleware = require("../middleware/index.js");
 const User = require("../models/user.js");
 const Donation = require("../models/donation.js");
 
+// Ensure you have the firebase admin initialized
+const { admin } = require('../firebase.js');
+
+
 router.get("/donor/dashboard", middleware.ensureDonorLoggedIn, async (req, res) => {
     const donorId = req.user._id;
     const numPendingDonations = await Donation.countDocuments({ donor: donorId, status: "pending" });
@@ -83,15 +87,27 @@ router.get("/donor/profile", middleware.ensureDonorLoggedIn, (req, res) => {
 router.put("/donor/profile", middleware.ensureDonorLoggedIn, async (req, res) => {
     try {
         const id = req.user._id;
-        const updateObj = req.body.donor; // updateObj: {firstName, lastName, gender, address, phone}
-        await User.findByIdAndUpdate(id, updateObj);
+        const { firstName, lastName, gender, address, phone } = req.body.donor;
 
-        req.flash("success", "Profile updated successfully");
-        res.redirect("/donor/profile");
+        // Ensure phone is defined and correctly formatted
+        if (phone) {
+            await User.findByIdAndUpdate(id, {
+                firstName,
+                lastName,
+                gender,
+                address,
+                phone
+            });
+
+            req.flash("success", "Profile updated successfully");
+            return res.redirect("/donor/profile");
+        } else {
+            throw new Error("Phone number is missing.");
+        }
     } catch (err) {
         console.log(err);
         req.flash("error", "Some error occurred on the server.");
-        res.redirect("back");
+        return res.redirect("back");
     }
 });
 

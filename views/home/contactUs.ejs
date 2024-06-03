@@ -1,17 +1,65 @@
-<h1 class="m-4 color-theme">Contact us</h1>
-	
-<div class="bg-white m-4 p-4 shadow">
-	<ul class="fs-5">
-		<li>For any concerns, please call at our toll free numbers between 9 AM to 6 PM:</li>
-		<ul>
-			<li>1500-393-455 (within India)</li>
-			<li>1500-393-455 (within India)</li>
-		</ul>
-		<li>You're welcome to explore our offices and witness firsthand the impactful ways our agents distribute food across various locations</li>
-		<ul>
-			<li>XYZ Nagar, Delhi</li>
-			<li>XYZ Vihar, Noida</li>
-		</ul>
-		<li>You can also email your suggestions and feedback at <mark>Nourish@gmail.com</mark></li>
-	</ul>
-</div>
+    <h1 class="m-4 color-theme text-center">Contact Us</h1>
+    <div class="row">
+        <div class="col-lg">
+            <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="w-50 bg-white p-5 m-auto" style="min-width: 500px;">
+                <div>
+                    <input type="hidden" name="access_key" value="3a08b6db-f737-4f64-b39d-a0284e51238a">
+                </div>
+                <h3 class="text-center mb-3">Contact Form</h3>
+                <div class="mb-3">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter Your Name" required>
+                </div>
+                <div class="mb-3">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Email address" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" name="mobile_no" class="form-control" id="mobile_no" placeholder="Mobile No" required>
+                </div>
+                <div class="mb-3">
+                    <textarea name="message" class="form-control" id="textarea" placeholder="Message" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary d-block m-auto mt-4">Submit</button>
+            </form>
+        </div>
+        <div class="col-lg bg-white m-4 p-4 shadow">
+            <ul class="fs-5">
+                <li>For any concerns, please call at our toll free numbers between 9 AM to 6 PM:</li>
+                <ul>
+                    <li>1500-393-455 (within India)</li>
+                    <li>1500-393-455 (within India)</li>
+                </ul>
+                <li>You're welcome to explore our offices and witness firsthand the impactful ways our agents distribute food across various locations:</li>
+                <ul>
+                    <li>XYZ Nagar, Delhi</li>
+                    <li>XYZ Vihar, Noida</li>
+                </ul>
+                <li>You can also email your suggestions and feedback at <mark>Nourish@gmail.com</mark></li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var form = this;
+            var formData = new FormData(form);
+
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+            }).then(function(response) {
+                if (response.ok) {
+                    form.reset(); // Reset the form after successful submission
+                    alert('Form submitted successfully!');
+                } else {
+                    alert('There was an error submitting the form.');
+                }
+            }).catch(function(error) {
+                console.error('Error:', error);
+                alert('There was an error submitting the form.');
+            });
+        });
+    </script>

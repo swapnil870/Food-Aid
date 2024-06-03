@@ -74,10 +74,10 @@
 			
 			<div class="mt-4">
 				<% if(donation.status == "pending") { %>
-					<a href="/admin/donation/accept/<%= donation._id %>" class="btn">Accept</a>
+					<a href="/admin/donation/accept/<%= donation._id %>" class="btn btn-success">Accept</a>
 					<a href="/admin/donation/reject/<%= donation._id %>" class="btn btn-danger">Reject</a>
 				<% } else if(donation.status == "accepted") { %>
-					<a href="/admin/donation/assign/<%= donation._id %>" class="btn">Assign agent</a>
+					<a href="/admin/donation/assign/<%= donation._id %>" class="btn btn-primary">Assign agent</a>
 				<% } %>
 			</div>
 			
