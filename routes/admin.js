@@ -1,8 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const middleware = require("../middleware/index.js");
+const nodemailer = require('nodemailer');
 const User = require("../models/user.js");
 const Donation = require("../models/donation.js");
+
+// Set up Nodemailer transporter
+const transporter = nodemailer.createTransport({
+    service: 'Gmail', // e.g., 'Gmail', 'SendGrid', etc.
+    auth: {
+        user: process.env.EMAIL, // replace with your email
+        pass: process.env.EMAIL_PASSWORD, // replace with your email password
+    },
+});
 
 // Ensure you have the firebase admin initialized
 const { admin } = require('../firebase.js'); 
@@ -76,8 +86,30 @@ router.get("/admin/donation/view/:donationId", middleware.ensureAdminLoggedIn, a
 router.get("/admin/donation/accept/:donationId", middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
         const donationId = req.params.donationId;
-        await Donation.findByIdAndUpdate(donationId, { status: "accepted" });
-        req.flash("success", "Donation accepted successfully");
+        // await Donation.findByIdAndUpdate(donationId, { status: "accepted" });
+        
+        // Find the donation and populate the donor field
+        const donation = await Donation.findById(donationId).populate("donor");
+        if (!donation) {
+            req.flash("error", "Donation not found.");
+            return res.redirect("back");
+        }
+
+        // Update the status of the donation
+        donation.status = "accepted";
+        await donation.save();
+
+        // Send email to the donor
+        const mailOptions = {
+            from: process.env.EMAIL, // sender address
+            to: donation.donor.email, // recipient address
+            subject: 'Donation Accepted', // Subject line
+            text: `Hello ${donation.donor.firstName},\n\nYour donation has been accepted.\n\nDonation ID: ${donation._id}\n\nThank you for your contribution.\n\nBest regards,\nYour Team`, // plain text body
+        };
+
+        await transporter.sendMail(mailOptions);
+        
+        req.flash("success", "Donation accepted successfully and donor notified via Email");
         res.redirect(`/admin/donation/view/${donationId}`);
     } catch (err) {
         console.log(err);
@@ -90,8 +122,30 @@ router.get("/admin/donation/accept/:donationId", middleware.ensureAdminLoggedIn,
 router.get("/admin/donation/reject/:donationId", middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
         const donationId = req.params.donationId;
-        await Donation.findByIdAndUpdate(donationId, { status: "rejected" });
-        req.flash("success", "Donation rejected successfully");
+        // await Donation.findByIdAndUpdate(donationId, { status: "rejected" });
+        
+        // Find the donation and populate the donor field
+        const donation = await Donation.findById(donationId).populate("donor");
+        if (!donation) {
+            req.flash("error", "Donation not found.");
+            return res.redirect("back");
+        }
+
+        // Update the status of the donation
+        donation.status = "rejected";
+        await donation.save();
+
+        // Send email to the donor
+        const mailOptions = {
+            from: process.env.EMAIL, // sender address
+            to: donation.donor.email, // recipient address
+            subject: 'Donation Rejected', // Subject line
+            text: `Hello ${donation.donor.firstName},\n\nWe regret to inform you that your donation has been rejected.\n\nDonation ID: ${donation._id}\n\nPlease contact us if you have any questions.\n\nBest regards,\nYour Team`, // plain text body
+        };
+
+        await transporter.sendMail(mailOptions);        
+
+        req.flash("success", "Donation rejected and donor notified via Email.");
         res.redirect(`/admin/donation/view/${donationId}`);
     } catch (err) {
         console.log(err);
@@ -106,6 +160,10 @@ router.get("/admin/donation/assign/:donationId", middleware.ensureAdminLoggedIn,
         const donationId = req.params.donationId;
         const agents = await User.find({ role: "agent" });
         const donation = await Donation.findById(donationId).populate("donor");
+        
+        console.log("Agents:", agents); // Log agents to debug
+        console.log("Donation:", donation); // Log donation to debug
+
         res.render("admin/assignAgent", { title: "Assign agent", donation, agents });
     } catch (err) {
         console.log(err);
@@ -118,10 +176,56 @@ router.get("/admin/donation/assign/:donationId", middleware.ensureAdminLoggedIn,
 router.post("/admin/donation/assign/:donationId", middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
         const donationId = req.params.donationId;
-        const { agent, adminToAgentMsg } = req.body;
-        await Donation.findByIdAndUpdate(donationId, { status: "assigned", agent, adminToAgentMsg });
-        req.flash("success", "Agent assigned successfully");
-        res.redirect(`/admin/donation/view/${donationId}`);
+        const agentId = req.body.agentId;
+        // const donorId = req.body.donorId;
+        const adminToAgentMsg = req.body.adminToAgentMsg;
+        
+        // Log the request body to debug
+        console.log(`Request Body: `, req.body);
+
+        // Log the agent ID to debug
+        console.log(`Assigning donation ${donationId} to agent ${agentId}`);
+
+        // Find the selected agent
+        const agent = await User.findById(agentId);
+        if (!agent) {
+            req.flash("error", "Selected agent not found.");
+            return res.redirect("back");
+        }
+
+        // const donor = await User.findById(donorId);
+        // if (!donor) {
+        //     req.flash("error", "Selected donor not found.");
+        //     return res.redirect("back");
+        // }
+
+        const donation = await Donation.findById(donationId).populate("donor");
+        if (!donation) {
+            req.flash("error", "Donation not found.");
+            return res.redirect("back");
+        }
+
+        // Log the populated donation to debug
+        console.log("Donation:", donation);
+
+        // Update the donation with the agent's ID
+        donation.assignedAgent = agentId;
+        donation.status = "assigned";
+        donation.adminToAgentMsg = adminToAgentMsg;
+        await donation.save();
+
+        // Send email to the selected agent
+        const mailOptions = {
+            from: process.env.EMAIL, // sender address
+            to: agent.email, // recipient address
+            subject: 'New Donation Assignment', // Subject line
+            text: `Hello ${agent.firstName},\n\nYou have been assigned a new donation.\n\nDonation ID: ${donation._id}\nDonor Name: ${donation.donor.firstName}\n\nPlease check your dashboard for more details.\n\nBest regards,\nNourish`, // plain text body
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        req.flash("success", `Agent ${agent.firstName} has been assigned and notified via email.`);
+        res.redirect("/admin/donations"); // redirect to the admin donations page
     } catch (err) {
         console.log(err);
         req.flash("error", "Some error occurred on the server.");

@@ -24,10 +24,10 @@
 			
 			<div class="mb-4">
 				<label for="agent" class="form-label">Select Agent</label>
-				<select name="agent" class="form-select" id="agent">
-					<% for(let i=0; i<agents.length; i++) { %>
-						<option value="<%= agents[i]._id %>"><%= agents[i].firstName + " " + agents[i].lastName %></option>
-					<% } %>
+				<select name="agentId" class="form-select" id="agent">
+					<% agents.forEach(function(agent) { %>
+						<option value="<%= agent._id %>"><%= agent.firstName + " " + agent.lastName %></option>
+					<% }); %>
 				</select>
 			</div>
 			

@@ -88,6 +88,7 @@
     "imurmurhash": "^0.1.4",
     "inherits": "^2.0.4",
     "ini": "^2.0.0",
+    "install": "^0.13.0",
     "ipaddr.js": "^1.9.1",
     "is-binary-path": "^2.1.0",
     "is-ci": "^2.0.0",
