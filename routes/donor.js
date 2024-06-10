@@ -1,12 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const middleware = require("../middleware/index.js");
+const nodemailer = require('nodemailer');
 const User = require("../models/user.js");
 const Donation = require("../models/donation.js");
 
-
 // Ensure you have the firebase admin initialized
 const { admin } = require('../firebase.js');
+
+// Set up Nodemailer transporter
+const transporter = nodemailer.createTransport({
+    service: 'Gmail', // e.g., 'Gmail', 'SendGrid', etc.
+    auth: {
+        user: process.env.EMAIL, // replace with your email
+        pass: process.env.EMAIL_PASSWORD, // replace with your email password
+    },
+});
 
 router.get("/donor/dashboard", middleware.ensureDonorLoggedIn, async (req, res) => {
     const donorId = req.user._id;
@@ -37,7 +46,25 @@ router.post("/donor/donate", middleware.ensureDonorLoggedIn, async (req, res) =>
         }
         const newDonation = new Donation(donation);
         await newDonation.save();
-        req.flash("success", "Donation request sent successfully");
+
+        // Fetch admin email from the User collection
+        const admin = await User.findOne({ role: "admin" });
+        if (!admin) {
+            throw new Error("Admin not found");
+        }
+        const adminEmail = admin.email;
+
+        // Send email notification to admin
+        const mailOptionsAdmin = {
+            from: process.env.EMAIL,
+            to: adminEmail,
+            subject: 'New Donation Request',
+            text: `A new donation request has been made.\n\nDetails:\nDonor: ${req.user.firstName} ${req.user.lastName}\nDonation ID: ${newDonation._id}\nFood Type: ${newDonation.foodType}\nQuantity: ${newDonation.quantity}\nCooking Time: ${newDonation.cookingTime}\nAddress: ${newDonation.address}\nPhone: ${newDonation.phone}\n\nBest regards,\nYour Organization`
+        };
+
+        await transporter.sendMail(mailOptionsAdmin);
+
+        req.flash("success", "Donation request sent successfully and notified via Email");
         res.redirect("/donor/donations/pending");
     } catch (err) {
         console.log(err);
