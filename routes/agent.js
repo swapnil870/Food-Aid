@@ -19,7 +19,7 @@ router.get("/agent/dashboard", middleware.ensureAgentLoggedIn, async (req, res) 
 
 router.get("/agent/collections/pending", middleware.ensureAgentLoggedIn, async (req, res) => {
     try {
-        const pendingCollections = await Donation.find({ agent: req.user._id, status: "assigned" }).populate("donor");
+        const pendingCollections = await Donation.find({ agent: req.user._id, status: "assigned" }).populate("donor").exec();
         res.render("agent/pendingCollections", { title: "Pending Collections", pendingCollections });
     } catch (err) {
         console.log(err);

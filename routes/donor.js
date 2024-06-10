@@ -4,9 +4,9 @@ const middleware = require("../middleware/index.js");
 const User = require("../models/user.js");
 const Donation = require("../models/donation.js");
 
+
 // Ensure you have the firebase admin initialized
 const { admin } = require('../firebase.js');
-
 
 router.get("/donor/dashboard", middleware.ensureDonorLoggedIn, async (req, res) => {
     const donorId = req.user._id;
@@ -32,7 +32,9 @@ router.post("/donor/donate", middleware.ensureDonorLoggedIn, async (req, res) =>
         const donation = req.body.donation;
         donation.status = "pending";
         donation.donor = req.user._id;
-        console.log(donation); // Log the donation object to debug
+        if (!donation.phone) {
+            throw new Error('Phone number is missing.');
+        }
         const newDonation = new Donation(donation);
         await newDonation.save();
         req.flash("success", "Donation request sent successfully");
@@ -44,11 +46,9 @@ router.post("/donor/donate", middleware.ensureDonorLoggedIn, async (req, res) =>
     }
 });
 
-
-
 router.get("/donor/donations/pending", middleware.ensureDonorLoggedIn, async (req, res) => {
     try {
-        const pendingDonations = await Donation.find({ donor: req.user._id, status: ["pending", "rejected", "accepted", "assigned"] }).populate("agent");
+        const pendingDonations = await Donation.find({ donor: req.user._id, status: ["pending", "rejected", "accepted", "assigned"] }).populate("agent").exec();
         res.render("donor/pendingDonations", { title: "Pending Donations", pendingDonations });
     } catch (err) {
         console.log(err);
@@ -89,7 +89,6 @@ router.put("/donor/profile", middleware.ensureDonorLoggedIn, async (req, res) =>
         const id = req.user._id;
         const { firstName, lastName, gender, address, phone } = req.body.donor;
 
-        // Ensure phone is defined and correctly formatted
         if (phone) {
             await User.findByIdAndUpdate(id, {
                 firstName,

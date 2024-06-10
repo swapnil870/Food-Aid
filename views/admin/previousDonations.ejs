@@ -30,6 +30,9 @@
                         <th scope="col">Food type</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Cooking Time</th>
+                        <th scope="col">Agent Name</th>
+                        <th scope="col">Collection Time</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -47,7 +50,28 @@
                             <td> <%= previousDonations[i].foodType %> </td>
                             <td> <%= previousDonations[i].quantity %> </td>
                             <td class="fw-bold text-<%= previousDonations[i].status %>"> <%= previousDonations[i].status %> </td>
-                            <td><a href="/admin/donation/view/<%= previousDonations[i]._id %>" class="btn">View</a></td>
+                            <td> 
+                                <% if (previousDonations[i].cookingTime) { %>
+                                    <%= new Date(previousDonations[i].cookingTime).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short"}) %>
+                                <% } else { %>
+                                    Cooking time not available
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (previousDonations[i].agent) { %>
+                                    <%= previousDonations[i].agent.firstName + " " + previousDonations[i].agent.lastName %>
+                                <% } else { %>
+                                    Agent information not available
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (previousDonations[i].collectionTime) { %>
+                                    <%= new Date(previousDonations[i].collectionTime).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short"}) %>
+                                <% } else { %>
+                                    Collection time not available
+                                <% } %>
+                            </td>
+                            <td><a href="/admin/donation/view/<%= previousDonations[i]._id %>" class="btn btn-primary">View</a></td>
                         </tr>
                     <% } %>
                 </tbody>

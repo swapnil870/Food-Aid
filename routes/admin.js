@@ -38,7 +38,7 @@ router.get("/admin/dashboard", middleware.ensureAdminLoggedIn, async (req, res) 
 // Pending donations route
 router.get("/admin/donations/pending", middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
-        const pendingDonations = await Donation.find({ status: { $in: ["pending", "accepted", "assigned"] } }).populate("donor");
+        const pendingDonations = await Donation.find({ status: { $in: ["pending", "accepted", "assigned"] } }).populate("donor").populate('agent').exec();
         res.render("admin/pendingDonations", { title: "Pending Donations", pendingDonations });
     } catch (err) {
         console.log(err);
@@ -50,7 +50,7 @@ router.get("/admin/donations/pending", middleware.ensureAdminLoggedIn, async (re
 // Previous donations route
 router.get("/admin/donations/previous", middleware.ensureAdminLoggedIn, async (req, res) => {
     try {
-        const previousDonations = await Donation.find({ status: "collected" }).populate("donor");
+        const previousDonations = await Donation.find({ status: "collected" }).populate("donor").populate('agent').exec();
         res.render("admin/previousDonations", { title: "Previous Donations", previousDonations });
     } catch (err) {
         console.log(err);
@@ -105,7 +105,7 @@ router.get("/admin/donation/assign/:donationId", middleware.ensureAdminLoggedIn,
     try {
         const donationId = req.params.donationId;
         const agents = await User.find({ role: "agent" });
-        const donation = await Donation.findById(donationId).populate("donor");
+        const donation = await Donation.findById(donationId).populate("donor").populate('agent').exec();
         res.render("admin/assignAgent", { title: "Assign agent", donation, agents });
     } catch (err) {
         console.log(err);

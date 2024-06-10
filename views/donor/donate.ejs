@@ -1,55 +1,115 @@
 <main>
-	<%- include('../partials/donorSidebar') %>
-	
-	<div id="main-wrapper">
-		<div class="bg-white shadow-sm p-3">
-			<span class="me-3" id="sidebar-toggler-btn"><i class="fas fa-bars"></i></span>
-			<h5 class="m-0 color-theme d-inline-block">Donate</h5>
-		</div>
-		
-		<form action="/donor/donate" method="POST" class="border m-4 my-3 p-4 bg-white rounded-2 shadow">
-			<div class="mb-4">
-				<label for="foodType" class="form-label">Food Type</label>
-				<input type="text" name="donation[foodType]" class="form-control" id="foodType" placeholder="Enter food.." required autofocus>
-			</div>
-			
-			<div class="row">
-				<div class="mb-4 col-sm-6">
-					<label for="quantity" class="form-label">Quantity</label>
-					<input type="text" name="donation[quantity]" class="form-control" id="quantity" placeholder="Enter quantity of food.." required>
-				</div>
-				
-				<div class="mb-4 col-sm-6">
-					<label for="cookingTime" class="form-label">Time of Cooking</label>
-					<input type="datetime-local" name="donation[cookingTime]" class="form-date-input" id="cookingTime" required>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="mb-4 col-sm-8">
-					<label for="address" class="form-label">Address to Collect</label>
-					<input type="text" name="donation[address]" class="form-control" id="address" placeholder="Enter address.." value="<%= currentUser.address %>" required>
-				</div>
-				
-				<div class="mb-4 col-sm-4">
-					<label for="phone" class="form-label">Phone</label>
-					<input type="tel" name="donation[phone]" class="form-control" id="phone" placeholder="Enter phone.." pattern="\d{10}" title="Please enter 10 digits" value="<%= currentUser.phone %>" required>
-				</div>
-			</div>
-			
-			<div class="mb-4">
-				<label for="msg" class="form-label">Want to write some message?</label>
-				<textarea type="text" name="donation[donorToAdminMsg]" class="form-control" id="msg" placeholder="You can write here some msg.."></textarea>
-			</div>
-			
-			<button type="submit" class="btn btn-primary w-75 d-block m-auto mt-4">Submit</button>
-		</form>
-	</div>
+    <%- include('../partials/donorSidebar') %>
+    
+    <div id="main-wrapper">
+        <div class="bg-white shadow-sm p-3">
+            <span class="me-3" id="sidebar-toggler-btn"><i class="fas fa-bars"></i></span>
+            <h5 class="m-0 color-theme d-inline-block">Donate</h5>
+        </div>
+        
+        <form id="donationForm" action="/donor/donate" method="POST" class="border m-4 my-3 p-4 bg-white rounded-2 shadow">
+            <div class="mb-4">
+                <label for="foodType" class="form-label">Food Type</label>
+                <input type="text" name="donation[foodType]" class="form-control" id="foodType" placeholder="Enter food.." required autofocus>
+            </div>
+            
+            <div class="row">
+                <div class="mb-4 col-sm-6">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="text" name="donation[quantity]" class="form-control" id="quantity" placeholder="Enter quantity of food.." required>
+                </div>
+                
+                <div class="mb-4 col-sm-6">
+                    <label for="cookingTime" class="form-label">Time of Cooking</label>
+                    <input type="datetime-local" name="donation[cookingTime]" class="form-date-input" id="cookingTime" required>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="mb-4 col-sm-8">
+                    <label for="address" class="form-label">Address to Collect</label>
+                    <input type="text" name="donation[address]" class="form-control" id="address" placeholder="Enter address.." value="<%= currentUser.address %>" required>
+                </div>
+                
+                <div class="mb-4 col-sm-4">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="tel" name="donation[phone]" class="form-control" id="phone" placeholder="Enter phone with country code.." pattern="\+\d{1,3}\d{10}" title="Please enter a valid phone number with country code" value="<%= currentUser.phone %>" required>
+                    <button type="button" id="sendOtpButton">Send OTP</button>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <input type="text" id="otp" placeholder="Enter OTP" class="form-control">
+                <button type="button" id="verifyOtpButton">Verify OTP</button>
+            </div>
+            
+            <div class="mb-4">
+                <label for="msg" class="form-label">Want to write some message?</label>
+                <textarea type="text" name="donation[donorToAdminMsg]" class="form-control" id="msg" placeholder="You can write here some msg.."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-75 d-block m-auto mt-4">Submit</button>
+        </form>
+    </div>
 </main>
 
 <script>
-	// Get the current date and time in the format required by datetime-local input
-	var currentDate = new Date().toISOString().slice(0, 16);
-	// Set the min attribute to the current date and time
-	document.getElementById("cookingTime").min = currentDate;
+    // Get the current date and time in the format required by datetime-local input
+    var currentDate = new Date().toISOString().slice(0, 16);
+    // Set the min attribute to the current date and time
+    document.getElementById("cookingTime").min = currentDate;
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "<%= process.env.FIREBASE_API_KEY %>",
+    authDomain: "<%= process.env.FIREBASE_AUTH_DOMAIN %>",
+    projectId: "<%= process.env.FIREBASE_PROJECT_ID %>",
+    storageBucket: "<%= process.env.FIREBASE_STORAGE_BUCKET %>",
+    messagingSenderId: "<%= process.env.FIREBASE_MESSAGING_SENDER_ID %>",
+    appId: "<%= process.env.FIREBASE_APP_ID %>"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  let confirmationResult;
+
+  document.getElementById('sendOtpButton').addEventListener('click', function() {
+    const phoneNumber = document.getElementById('phone').value;
+    const appVerifier = new firebase.auth.RecaptchaVerifier('sendOtpButton', {
+      'size': 'invisible',
+    });
+
+    firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+      .then(result => {
+        confirmationResult = result;
+        alert('OTP sent!');
+      }).catch(error => {
+        console.error(error);
+        alert('Failed to send OTP.');
+      });
+  });
+
+  document.getElementById('verifyOtpButton').addEventListener('click', function() {
+    const otp = document.getElementById('otp').value;
+    confirmationResult.confirm(otp).then(result => {
+      alert('OTP verified!');
+      // Enable the form submission once OTP is verified
+      document.getElementById('donationForm').dataset.otpVerified = 'true';
+    }).catch(error => {
+      console.error(error);
+      alert('Invalid OTP.');
+      // Reset the OTP verification status
+      document.getElementById('donationForm').dataset.otpVerified = 'false';
+    });
+  });
+
+  document.getElementById('donationForm').addEventListener('submit', function(e) {
+    // Check if OTP is verified before allowing form submission
+    if (document.getElementById('donationForm').dataset.otpVerified !== 'true') {
+      alert('Please verify OTP before submitting the form.');
+      e.preventDefault();
+    }
+  });
 </script>

@@ -7,11 +7,13 @@
 				<span><i class="fas fa-bars text-white"></i></span>
 			</button>
 			<div class="collapse navbar-collapse ps-2" id="navbarSupportedContent" style="z-index: 1;">
-				<ul class="navbar-nav me-lg-5 m-0 m-auto">
+				<ul class="navbar-nav me-lg-3 m-0 m-auto">
 					<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
 					<li class="nav-item"><a class="nav-link" href="/home/about-us">About us</a></li>
 					<li class="nav-item"><a class="nav-link" href="/home/mission">Our mission</a></li>
 					<li class="nav-item pe-3"><a class="nav-link" href="/home/contact-us">Contact us</a></li>
+					</ul>
+					<ul class="navbar-nav me-lg-5 m-0 m-auto">
 					<% if(currentUser) { %>
 						<div class="dropdown ">
 							<li class="user-icon dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false"><%= currentUser.firstName[0] %></li>

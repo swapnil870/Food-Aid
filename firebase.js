@@ -19,12 +19,12 @@ admin.initializeApp({
 });
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCLvZ-thlW5gC1EQnhyBeeSSfLRadWUZ78",
-  authDomain: "food-donation-system-87d9d.firebaseapp.com",
-  projectId: "food-donation-system-87d9d",
-  storageBucket: "food-donation-system-87d9d.appspot.com",
-  messagingSenderId: "134570691935",
-  appId: "1:134570691935:web:0439343cee3916e7c8faea",
+  apiKey: "AIzaSyAfJJoC7NyEyZeSScgjQT-4ScxcFdzz7NI",
+  authDomain: "food-donation-system-1f45f.firebaseapp.com",
+  projectId: "food-donation-system-1f45f",
+  storageBucket: "food-donation-system-1f45f.appspot.com",
+  messagingSenderId: "130151732478",
+  appId: "1:130151732478:web:194a4cb3368c2251da81af"
 };
 
 firebase.initializeApp(firebaseConfig);
