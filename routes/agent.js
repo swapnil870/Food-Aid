@@ -75,6 +75,9 @@ router.get("/agent/collection/collect/:collectionId", middleware.ensureAgentLogg
         }
         const adminEmail = admin.email;
 
+        // Get agent details from req.user
+        const agentName = `${req.user.firstName} ${req.user.lastName}`;
+
         // Send email notifications
         const donorEmail = collection.donor.email;
         
@@ -82,14 +85,14 @@ router.get("/agent/collection/collect/:collectionId", middleware.ensureAgentLogg
             from: process.env.EMAIL,
             to: donorEmail,
             subject: 'Donation Collected',
-            text: `Dear ${collection.donor.firstName},\n\nYour donation has been successfully collected. Thank you for your generosity!\n\nBest regards,\nYour Organization`
+            text: `Dear ${collection.donor.firstName},\n\nYour donation has been successfully collected by:-\n\nAgent Nane : ${agentName}.\n\nThank you for your generosity!\n\nBest regards,\nYour Organization`
         };
 
         const mailOptionsAdmin = {
             from: process.env.EMAIL,
             to: adminEmail,
             subject: 'Donation Collected',
-            text: `A donation has been collected.\n\nDetails:\nDonor: ${collection.donor.firstName} ${collection.donor.lastName}\nDonation ID: ${collection._id}\n\nBest regards,\nYour Organization`
+            text: `A donation has been collected.\n\nDetails:\nDonor: ${collection.donor.firstName} ${collection.donor.lastName}\nDonation ID: ${collection._id}\nCollected by: ${agentName}\n\nBest regards,\nYour Organization`
         };
 
         await transporter.sendMail(mailOptionsDonor);

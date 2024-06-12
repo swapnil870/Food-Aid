@@ -36,6 +36,12 @@ const userSchema = new mongoose.Schema({
     securityKey: {
         type: String,
         required: function() { return this.role === 'admin'; } // only required for admin role
+    },
+    resetPasswordToken: {
+         type: String 
+    },
+    resetPasswordExpires: {
+         type: Date 
     }
 });
 

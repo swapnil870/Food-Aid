@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require('path');
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
@@ -11,6 +12,7 @@ const authRoutes = require("./routes/auth.js");
 const adminRoutes = require("./routes/admin.js");
 const donorRoutes = require("./routes/donor.js");
 const agentRoutes = require("./routes/agent.js");
+// const authRoutes = require('./routes/auth.js');
 require("dotenv").config();
 require("./config/dbConnection.js")();
 require("./config/passport.js")(passport);
@@ -27,6 +29,13 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
+
+app.set('views', path.join(__dirname, 'views'));
+
+// Middleware to parse URL-encoded data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

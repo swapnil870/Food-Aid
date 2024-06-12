@@ -1,5 +1,5 @@
 <div class="m-0 pt-5 w-100 bg-img-1">
-	<form action="/auth/signup" method="POST" class="form w-50 bg-white p-5 m-auto" style="min-width: 450px;">
+	<form action="/auth/signup" method="POST" class="form w-50 bg-white p-5 m-auto" style="min-width: 450px;" onsubmit="return validatePassword()">
 		<h3 class="text-center mb-3">User Signup</h3>
 
 		<% if (typeof errors != 'undefined') { %>
@@ -26,10 +26,10 @@
 
 		<div class="mb-3">
 			<input type="password" name="password1" class="form-control" id="password1" placeholder="Password" value="<%= typeof password1 != 'undefined' ? password1 : '' %>" required>
+			<div class="form-text text-danger" id="passwordError" style="display: none;">Password must contain at least one letter, one number, and one "@" character.</div>
 		</div>
 
 		<div class="mb-3">
-			
 			<input type="password" name="password2" class="form-control" id="password2" placeholder="Confirm Password" value="<%= typeof password2 != 'undefined' ? password2 : '' %>" required>
 		</div>
 
@@ -67,8 +67,21 @@
 		}
 	}
 
-	// Call the function on page load in case 'admin' is already selected
 	document.addEventListener('DOMContentLoaded', function() {
 		toggleSecurityKeyField();
 	});
+
+	function validatePassword() {
+		const password1 = document.getElementById('password1').value;
+		const passwordError = document.getElementById('passwordError');
+		const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@])[A-Za-z\d@]{4,}$/;
+
+		if (!passwordPattern.test(password1)) {
+			passwordError.style.display = 'block';
+			return false;
+		} else {
+			passwordError.style.display = 'none';
+			return true;
+		}
+	}
 </script>
