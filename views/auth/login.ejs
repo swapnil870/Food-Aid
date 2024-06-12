@@ -1,6 +1,7 @@
-
-<div class="m-0 pt-5 w-100 bg-img-2">
-	<form action="/auth/login" method="POST" class="form w-50 bg-white p-5 m-auto" style="min-width: 450px; background-color: transparent;">
+<div class="row">
+	<div class="col-8 m-auto"><img src="/assets/images/imglogin.jpg" alt="" height="100%" width="100%"></div>
+<div class="col m-auto w-100">
+	<form action="/auth/login" method="POST" class="form w-50 bg-white" style="min-width: 450px; background-color: transparent;">
 		<h3 class="text-center mb-3">User Login</h3>
 		<div class="mb-3">
 			<!-- <label for="email" class="form-label">Email address</label> -->
@@ -12,16 +13,17 @@
 			<input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
 		</div>
 		
-		<button type="submit" class="btn btn-primary d-block m-auto mt-4">Login</button>
+		<button type="submit" class="btn btn-warning w-100 mt-4 rounded-pill">Login</button>
 		
 		<div class="mt-3">
 			<span>Don't have an account?</span>
 			<a href="/auth/signup">Signup here</a>
-			</div>
-			
-			<div class="mt-3">
-		     <span>Forget Password</span>
-			<a href="/auth/forgot-password">Forgot Password?</a>
-		  </div>
+		</div>
+		<div class="mt-3">
+			<span>Forgot Password</span>
+			<a href="/auth/forgot-password">Click Here</a>
+		</div>
+		
 	</form>
+</div>
 </div>

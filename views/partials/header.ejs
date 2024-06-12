@@ -1,11 +1,7 @@
 <header>
-	<nav class="navbar navbar-expand-md navbar-light p-0 h-100">
+	<nav class="navbar navbar-expand-md navbar-light p-0 h-100 sticky-top">
 		<div class="container-fluid">
-			<% if(!currentUser) { %>
-			<a class="navbar-brand text-white ps-4" href="/"><h2>Nourish</h2></a>
-			<% } else { %>
-			<div class="navbar-brand text-white ps-4" href="/"><h2>Nourish</h2></div>
-			<% } %>
+			<a class="navbar-brand text-white ps-5 ms-4" href="/"><h2>Nourish</h2></a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span><i class="fas fa-bars text-white"></i></span>
@@ -64,7 +60,7 @@
 						<li class="nav-item pe-3"><a class="nav-link" href="/home/contact-us">Contact us</a></li>
 					</ul>
 					<% } %>
-					<ul class="navbar-nav me-lg-5 m-0 m-auto">
+					<ul class="navbar-nav me-lg-5 m-0 m-auto pe-5">
 					<% if(currentUser) { %>
 						<div class="dropdown ">
 							<li class="user-icon dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false"><%= currentUser.firstName[0] %></li>
@@ -82,8 +78,8 @@
 							</ul>
 						  </div>
 					<% } else { %>
-						<li class="button1 btn-outline-success me-1 rounded"><a class="nav-link" href="/auth/login" >Login</a></li>
-						<li class="button2 btn-outline-primary rounded"><a class="nav-link" href="/auth/signup">Signup</a></li>
+						<li class="button1 btn-outline-success me-1 rounded-pill px-4"><a class="nav-link" href="/auth/login" >Login</a></li>
+						<li class="button2 btn-outline-primary rounded-pill px-4"><a class="nav-link" href="/auth/signup">Signup</a></li>
 					<% } %>
 				</ul>
 			</div>
