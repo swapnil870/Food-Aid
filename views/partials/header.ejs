@@ -1,14 +1,14 @@
 <header>
 	<nav class="navbar navbar-expand-md navbar-light p-0 h-100 sticky-top">
 		<div class="container-fluid">
-			<a class="navbar-brand text-white ps-5 ms-4" href="/"><h2>Nourish</h2></a>
+			<a class="navbar-brand text-white ps-xl-5 ms-xl-4 ps-0 ms-0" href="/"><h2>Nourish</h2></a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span><i class="fas fa-bars text-white"></i></span>
 			</button>
 			<div class="collapse navbar-collapse ps-2" id="navbarSupportedContent" style="z-index: 1;">
 				<% if(currentUser) { %>
-					<ul class="navbar-nav me-3  m-auto">
+					<ul class="navbar-nav me-xl-3 me-0 m-auto">
 					<% if(currentUser.role === "donor") { %>
 						<li class="nav-item"><a class="nav-link" href="/donor/dashboard">
 							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-clipboard-data-fill mb-1" viewBox="0 0 16 16">
@@ -53,14 +53,14 @@
 						<% } %>
 					</ul>
 					<% } else { %>
-					<ul class="navbar-nav me-3 m-auto">
+					<ul class="navbar-nav me-xl-3 me-0 m-auto">
 						<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="/home/about-us">About us</a></li>
 						<li class="nav-item"><a class="nav-link" href="/home/mission">Our mission</a></li>
 						<li class="nav-item pe-3"><a class="nav-link" href="/home/contact-us">Contact us</a></li>
 					</ul>
 					<% } %>
-					<ul class="navbar-nav me-lg-5 m-0 m-auto pe-5">
+					<ul class="navbar-nav me-xl-5 m-0 m-auto pe-xl-5 pe-0">
 					<% if(currentUser) { %>
 						<div class="dropdown ">
 							<li class="user-icon dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false"><%= currentUser.firstName[0] %></li>

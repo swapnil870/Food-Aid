@@ -21,16 +21,19 @@ header
 	background: linear-gradient(45deg, rgb(38, 7, 75) 10%, rgb(37, 37, 149) 60% , rgb(1, 17, 61) 100%); */
 	background: #032435;
 	height: 9vh;
-	font-weight: 500;
+	/* font-weight: 500; */
+	/* width:min-content; */
 }
  .nav-link
 {
 	color: rgb(24, 24, 24) !important;
-	font-weight: 400;
-	font-size: 1.3em;
+	font-weight: 300;
+	font-size: 1.1em;
 	color: white !important;
-	margin-right: 3px;
+	/* margin-right: 2px; */
+	border-bottom: 2px solid rgba(244, 240, 240, 0);
 }
+
 @media screen and (max-width:765px) {
 	header #navbarSupportedContent
 {
@@ -88,12 +91,12 @@ header .navbar-toggler:focus
 }
 
 .form{
-	/* background-color: #efefef5f !important; */
+	/* background-color: #efefef !important; */
 	/* color: white !important; */
-	/* backdrop-filter: blur(30px); */
+	/* backdrop-filter: blur(90px); */
 	/* box-shadow: 0px 0px 6px  #0000005f; */
 	z-index: 2;
-	/* border-radius: 10px; */
+	border-radius: 10px;
 	border: none !important;
 	::placeholder{
 		color: #a09d9d;
